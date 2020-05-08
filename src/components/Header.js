@@ -4,15 +4,22 @@ import styled from '@emotion/styled';
 
 const ContenedorHeader=styled.header`
   background-color:#26C6DA;
-  padding:10px;
+  padding:15px;
   font-weight:bold;
   color:#FFFFFF;
-`
+`;
+
+const TextoHeader=styled.h1`
+font-size:2rem;
+margin:0;
+font-family:'Slabo 27px', sans-serif;
+text-align:center;
+`;
 
 const Header = ({titulo}) => {
   return (
     <ContenedorHeader>
-      <h1>{titulo}</h1>
+      <TextoHeader>{titulo}</TextoHeader>
     </ContenedorHeader>
   );
 };
