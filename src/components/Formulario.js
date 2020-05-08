@@ -1,5 +1,6 @@
 import React,{useState} from 'react';
 import styled from '@emotion/styled';
+import {getDiferenciaYear} from '../helpers';
 
 //Use styled components
 
@@ -42,6 +43,14 @@ const Boton=styled.button`
     }
 `;
 
+const Error=styled.div`
+background-color:red;
+color:white;
+width:100%;
+margin-bottom:1rem;
+padding:1rem;
+`;
+
 /* Fin styled components */
 
 const Formulario = () => {
@@ -52,7 +61,11 @@ const Formulario = () => {
         year:'',
         plan:''
     })
-    /* Extemos primero los valores */
+
+    /* state paa el error */
+    const [error, seterror] = useState(false);
+
+    /* Extraemos primero los valores */
     const {marca,year,plan}=datos;
 
     /* Leer datos del formulario */
@@ -63,13 +76,35 @@ const Formulario = () => {
         });
     }
 
-    /* Validar la información */
-    const validarInformacion=e=>{
+    /* Validar la información del formulario */
+    const cotizar=e=>{
         e.preventDefault();
+        if (marca.trim()==='' || plan.trim()==='' || year.trim()==='') {
+           seterror(true);
+           return;
+        }
+        seterror(false);
+
+        /* Iniciamos con una base de 2000 */
+        let resultado=2000;
+
+        /* Obtener la diferencia de año */
+        const diferencia=getDiferenciaYear(year);
+        resultado-=((diferencia*3)*resultado)/100;
+        console.log(resultado);
+        
+        
+        /* por cada año restamos el 3% */
+        /* americano 15% */
+        /* asiatico 5% */
+        /* europeo 30% */
+        /* basico aumenta 20% */
+        /* completo aumenta el 50% */
     }
 
     return ( 
-        <form onSubmit={validarInformacion}>
+        <form onSubmit={cotizar}>
+            {error? <Error>Campos obligatorios</Error>:null}
             <Campo>
                 <Label>Marca:</Label>
                 <Select
