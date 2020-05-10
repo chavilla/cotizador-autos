@@ -1,5 +1,6 @@
 import React,{useState} from 'react';
 import styled from '@emotion/styled';
+import Proptypes from 'prop-types';
 import {getDiferenciaYear,calcularMarca,calcularPlan} from '../helpers';
 
 //Use styled components
@@ -53,7 +54,7 @@ padding:1rem;
 
 /* Fin styled components */
 
-const Formulario = ({setResumen}) => {
+const Formulario = ({setResumen,setcargando}) => {
 
     /* Crear un objeto datos para almacenar marca, año, y plan */
     const [datos, setdatos] = useState({
@@ -79,6 +80,7 @@ const Formulario = ({setResumen}) => {
     /* Validar la información del formulario */
     const cotizar=e=>{
         e.preventDefault();
+
         if (marca.trim()==='' || plan.trim()==='' || year.trim()==='') {
            seterror(true);
            return;
@@ -99,10 +101,15 @@ const Formulario = ({setResumen}) => {
         /* basico aumenta 20% */
         /* completo aumenta el 50% */
         resultado=parseFloat(calcularPlan(plan)*resultado).toFixed(2);
-        setResumen({
-            cotizacion:resultado,
-            datos
-        })
+
+        setcargando(true);
+        setTimeout(() => {
+            setcargando(false)
+            setResumen({
+                cotizacion:Number(resultado),
+                datos
+            })
+        }, 3000);
         
     }
 
@@ -163,6 +170,11 @@ const Formulario = ({setResumen}) => {
             <Boton type="submit">Completar</Boton>
         </form>
      );
+}
+
+Formulario.propTypes={
+    setResumen: Proptypes.func.isRequired,
+    setcargando:Proptypes.func.isRequired
 }
  
 export default Formulario;
