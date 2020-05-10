@@ -1,6 +1,6 @@
 import React,{useState} from 'react';
 import styled from '@emotion/styled';
-import {getDiferenciaYear} from '../helpers';
+import {getDiferenciaYear,calcularMarca,calcularPlan} from '../helpers';
 
 //Use styled components
 
@@ -53,7 +53,7 @@ padding:1rem;
 
 /* Fin styled components */
 
-const Formulario = () => {
+const Formulario = ({setResumen}) => {
 
     /* Crear un objeto datos para almacenar marca, año, y plan */
     const [datos, setdatos] = useState({
@@ -90,16 +90,20 @@ const Formulario = () => {
 
         /* Obtener la diferencia de año */
         const diferencia=getDiferenciaYear(year);
-        resultado-=((diferencia*3)*resultado)/100;
-        console.log(resultado);
-        
-        
         /* por cada año restamos el 3% */
+        resultado-=((diferencia*3)*resultado)/100;
         /* americano 15% */
         /* asiatico 5% */
         /* europeo 30% */
+        resultado=parseFloat(calcularMarca(marca) *resultado).toFixed(2);
         /* basico aumenta 20% */
         /* completo aumenta el 50% */
+        resultado=parseFloat(calcularPlan(plan)*resultado).toFixed(2);
+        setResumen({
+            cotizacion:resultado,
+            datos
+        })
+        
     }
 
     return ( 
